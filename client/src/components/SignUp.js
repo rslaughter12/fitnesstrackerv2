@@ -1,8 +1,10 @@
 import React, { useState } from 'react';
 import { TextField, Button, Container, Paper, Grid, Typography } from '@mui/material';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom'; // Change import
 
 const SignUp = () => {
+  const navigate = useNavigate(); // Change the history to navigate
+
   const [formData, setFormData] = useState({
     firstName: '',
     username: '',
@@ -34,7 +36,8 @@ const SignUp = () => {
 
       if (response.ok) {
         console.log('User registered successfully');
-        // Redirect or perform other actions upon successful registration
+        // Redirect to /dashboard upon successful registration
+        navigate('/dashboard'); // Change to useNavigate
       } else {
         console.error('Error registering user');
       }
