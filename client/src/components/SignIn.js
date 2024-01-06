@@ -1,15 +1,49 @@
-import React from 'react';
-import {
-  TextField,
-  Button,
-  Container,
-  Paper,
-  Grid,
-  Typography,
-} from '@mui/material';
-import { Link } from 'react-router-dom';
+import React, { useState } from 'react';
+import { TextField, Button, Container, Paper, Grid, Typography } from '@mui/material';
+import { Link, useNavigate } from 'react-router-dom';
 
 const SignIn = () => {
+  const [formData, setFormData] = useState({
+    username: '',
+    password: ''
+  });
+  const [error, setError] = useState('');
+  const navigate = useNavigate();
+
+  const handleInputChange = (e) => {
+    setFormData({
+      ...formData,
+      [e.target.name]: e.target.value
+    });
+  };
+
+  const handleFormSubmit = async (e) => {
+    e.preventDefault();
+
+    try {
+      const response = await fetch('http://localhost:5000/signin', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(formData),
+      });
+
+      if (response.ok) {
+        console.log('User authenticated successfully');
+        // Redirect to the dashboard upon successful authentication
+        navigate('/dashboard');
+      } else {
+        console.error('Authentication failed');
+        // Handle authentication failure (e.g., show error message)
+        setError('Invalid username or password');
+      }
+    } catch (error) {
+      console.error('Network error:', error);
+      // Handle network error
+    }
+  };
+
   return (
     <>
       <Link to='/' className='signin-button'>
@@ -28,17 +62,8 @@ const SignIn = () => {
           <Typography component='h1' variant='h5'>
             Sign In
           </Typography>
-          <form style={{ width: '100%', marginTop: 10 }}>
+          <form style={{ width: '100%', marginTop: 10 }} onSubmit={handleFormSubmit}>
             <Grid container spacing={2}>
-              <Grid item xs={12}>
-                <TextField
-                  required
-                  fullWidth
-                  label='First Name'
-                  variant='outlined'
-                  name='firstName'
-                />
-              </Grid>
               <Grid item xs={12}>
                 <TextField
                   required
@@ -46,6 +71,7 @@ const SignIn = () => {
                   label='Username'
                   variant='outlined'
                   name='username'
+                  onChange={handleInputChange}
                 />
               </Grid>
               <Grid item xs={12}>
@@ -56,21 +82,19 @@ const SignIn = () => {
                   variant='outlined'
                   type='password'
                   name='password'
+                  onChange={handleInputChange}
                 />
               </Grid>
             </Grid>
-            <Link
-              Link
-              to='/dashboard'
-              type='submit'
-              fullWidth
-              variant='contained'
-              color='primary'
-              style={{ marginTop: 20 }}
-            >
+            <Button type='submit' fullWidth variant='contained' color='primary' style={{ marginTop: 20 }}>
               Sign In
-            </Link>
+            </Button>
           </form>
+          {error && (
+            <Typography variant='body2' color='error' style={{ marginTop: 10 }}>
+              {error}
+            </Typography>
+          )}
         </Paper>
       </Container>
     </>
