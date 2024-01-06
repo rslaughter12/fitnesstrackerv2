@@ -6,11 +6,8 @@ import {
   Paper,
   Grid,
   Typography,
-  Select,
   MenuItem,
   Checkbox,
-  Card,
-  CardContent,
   IconButton,
 } from '@mui/material';
 import { Link } from 'react-router-dom';
@@ -295,26 +292,25 @@ const Dashboard = () => {
           </Grid>
         </Paper>
 
-        <Card style={{ marginTop: '20px' }}>
-          <CardContent>
-            <Typography variant='h6'>Added Workouts</Typography>
+        <div>
+          <h1>Dashboard</h1>
+          <div className="cards-container">
             {addedWorkouts.map((workout, index) => (
-              <div key={index}>
+              <div key={index} className="card">
+                <Typography variant="h6">Workout {index + 1}</Typography>
                 <p>Date: {workout.date.toDateString()}</p>
-                <p>Workout Type: {workout.workoutTypes.join(', ')}</p>
-                <p>Excersises: {workout.formsOfWorkout.join(', ')}</p>
+                <p>Workout Types: {workout.workoutTypes.join(', ')}</p>
+                <p>Forms of Workout: {workout.formsOfWorkout.join(', ')}</p>
                 <IconButton
-                  color='secondary'
-                  aria-label='delete'
+                  color="secondary"
                   onClick={() => handleDeleteWorkout(index)}
                 >
                   <DeleteIcon />
                 </IconButton>
-                <hr />
               </div>
             ))}
-          </CardContent>
-        </Card>
+          </div>
+        </div>
       </Container>
     </>
   );
