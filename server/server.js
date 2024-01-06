@@ -18,6 +18,7 @@ mongoose.connect('mongodb://127.0.0.1:27017/fitnessDB', {
 
 // Define schema
 const userSchema = new mongoose.Schema({
+  firstName: String, // Updated schema with firstName
   username: String,
   password: String,
   // Add other fields as needed
@@ -28,10 +29,16 @@ const User = mongoose.model('User', userSchema);
 // Example registration route
 app.post('/register', async (req, res) => {
   try {
-    const { username, password } = req.body;
+    const { firstName, username, password } = req.body;
+
+    // Check if the username already exists
+    const existingUser = await User.findOne({ username });
+    if (existingUser) {
+      return res.status(400).json({ message: 'Username already exists' });
+    }
 
     // Create a new user using the User model
-    const newUser = new User({ username, password });
+    const newUser = new User({ firstName, username, password });
 
     // Save the user to the database
     await newUser.save();
@@ -68,4 +75,3 @@ app.post('/signin', async (req, res) => {
 app.listen(port, () => {
   console.log(`Server is running on port: ${port}`);
 });
-

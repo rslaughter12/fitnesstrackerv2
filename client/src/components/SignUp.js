@@ -22,7 +22,7 @@ const SignUp = () => {
     console.log('Form data:', formData);
 
     try {
-      const response = await fetch('http://localhost:5000/SignUp', {
+      const response = await fetch('http://localhost:5000/register', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
@@ -55,7 +55,6 @@ const SignUp = () => {
           </Typography>
           <form style={{ width: '100%', marginTop: 10 }} onSubmit={handleFormSubmit}>
             <Grid container spacing={2}>
-              {/* Include other form fields as needed */}
               <Grid item xs={12}>
                 <TextField
                   required
