@@ -20,6 +20,7 @@ const workoutSchema = new mongoose.Schema({
 
 // Define the schema for the User model
 const userSchema = new mongoose.Schema({
+    firstName: String,
     username: {
         type: String,
         required: true,
@@ -29,7 +30,6 @@ const userSchema = new mongoose.Schema({
         type: String,
         required: true,
     },
-    // Embed the Workout subdocument within the User schema
     workouts: [workoutSchema],
 });
 

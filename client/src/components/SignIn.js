@@ -19,7 +19,7 @@ const SignIn = () => {
 
   const handleFormSubmit = async (e) => {
     e.preventDefault();
-
+  
     try {
       const response = await fetch('http://localhost:5000/signin', {
         method: 'POST',
@@ -28,19 +28,20 @@ const SignIn = () => {
         },
         body: JSON.stringify(formData),
       });
-
+  
       if (response.ok) {
         console.log('User authenticated successfully');
-        // Redirect to the dashboard upon successful authentication
+        // Navigate to the dashboard or perform any other action
         navigate('/dashboard');
       } else {
-        console.error('Authentication failed');
-        // Handle authentication failure (e.g., show error message)
+        console.log('Invalid username or password');
+        // Handle authentication failure
         setError('Invalid username or password');
       }
     } catch (error) {
       console.error('Network error:', error);
       // Handle network error
+      setError('Network error. Please try again.');
     }
   };
 
